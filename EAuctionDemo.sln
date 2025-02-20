@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FS.EAuctions.API", "FS.EAuctions.API\FS.EAuctions.API.csproj", "{100EBB31-7D3B-4B1F-ACD9-E13D2C9EEC6F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FS.EAuctions.Data", "FS.EAuctions.Data\FS.EAuctions.Data.csproj", "{FD8939F2-1BDA-48A3-AE55-04805C5DB662}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FS.EAuctions.Domain", "FS.EAuctions.Domain\FS.EAuctions.Domain.csproj", "{FD66BB2C-A868-402A-BAB6-46351EFCE331}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FS.EAuctions.Application", "FS.EAuctions.Application\FS.EAuctions.Application.csproj", "{3C20EB7B-97C6-401B-B4F9-831513A6BCC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{550E6A7B-54EB-44E8-9A1C-CFE97184C2BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoropioRecipeApp.Application.Tests", "LoropioRecipeApp.Application.Tests\LoropioRecipeApp.Application.Tests.csproj", "{FE2279D3-133F-481E-AEEB-4D6292EACAA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{100EBB31-7D3B-4B1F-ACD9-E13D2C9EEC6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{100EBB31-7D3B-4B1F-ACD9-E13D2C9EEC6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{100EBB31-7D3B-4B1F-ACD9-E13D2C9EEC6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{100EBB31-7D3B-4B1F-ACD9-E13D2C9EEC6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD8939F2-1BDA-48A3-AE55-04805C5DB662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD8939F2-1BDA-48A3-AE55-04805C5DB662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD8939F2-1BDA-48A3-AE55-04805C5DB662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD8939F2-1BDA-48A3-AE55-04805C5DB662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD66BB2C-A868-402A-BAB6-46351EFCE331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD66BB2C-A868-402A-BAB6-46351EFCE331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD66BB2C-A868-402A-BAB6-46351EFCE331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD66BB2C-A868-402A-BAB6-46351EFCE331}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C20EB7B-97C6-401B-B4F9-831513A6BCC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C20EB7B-97C6-401B-B4F9-831513A6BCC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C20EB7B-97C6-401B-B4F9-831513A6BCC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C20EB7B-97C6-401B-B4F9-831513A6BCC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE2279D3-133F-481E-AEEB-4D6292EACAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE2279D3-133F-481E-AEEB-4D6292EACAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE2279D3-133F-481E-AEEB-4D6292EACAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE2279D3-133F-481E-AEEB-4D6292EACAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FE2279D3-133F-481E-AEEB-4D6292EACAA6} = {550E6A7B-54EB-44E8-9A1C-CFE97184C2BF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C12BABA2-8370-4576-A5E3-7A31A0AD6D5B}
+	EndGlobalSection
+EndGlobal
