@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FS.EAuctions.Data.Configuration;
 
-internal class AuctionConfiguration : IEntityTypeConfiguration<BuyerAuction>
+internal class BuyerAuctionConfiguration : IEntityTypeConfiguration<BuyerAuction>
 {
     public void Configure(EntityTypeBuilder<BuyerAuction> builder)
     {
@@ -14,7 +14,7 @@ internal class AuctionConfiguration : IEntityTypeConfiguration<BuyerAuction>
             .HasMaxLength(80)
             .IsRequired();
         
-        builder.HasMany(r => r.Bids)
+        builder.HasMany(r => r.BuyerBids)
             .WithOne(i => i.Auction)
             .HasForeignKey(i => i.AuctionId);
     }

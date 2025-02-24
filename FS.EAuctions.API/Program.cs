@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FS.EAuctions.Data.DBContexts.Application;
 using FS.EAuctions.Data.Repository;
 using FS.EAuctions.Domain.Auctions;
+using FS.EAuctions.Domain.Bids;
 using Fs.EAuctions.Domain.Contracts;
 
 // Log.Logger = new LoggerConfiguration()
@@ -33,7 +34,8 @@ builder.Services.AddDbContext<AuctionDbContext>(
 );
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IBuyerAuctionRepository, BuyerAuctionRepository>();
+builder.Services.AddScoped<IAuctionRepository<BuyerAuction, BuyerBid>, BuyerAuctionRepository>();
+builder.Services.AddScoped<IAuctionRepository<SupplierAuction, SupplierBid>, SupplierAuctionRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -22,7 +22,7 @@ export default function () {
     const bidName = `Test Bid VU${__VU}-Iter${__ITER}`; // Unique for each VU and iteration
     const randomQuantity = Math.floor(Math.random() * 100) + 1;
     
-    http.post('http://localhost:5109/api/buyerauctions/01951806-fe49-72bb-b9fe-3aca8b9c19a0/bids', JSON.stringify(
+    http.post('http://localhost:5109/api/buyerauctions/019527cc-26ca-7c73-9e08-bd51123a9dde/bids', JSON.stringify(
 	{
       "name": bidName,
       "quantity": randomQuantity,

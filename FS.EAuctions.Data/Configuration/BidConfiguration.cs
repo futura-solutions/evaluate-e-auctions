@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FS.EAuctions.Data.Configuration;
 
-internal class BidConfiguration : IEntityTypeConfiguration<Bid>
+internal class BidConfiguration : IEntityTypeConfiguration<SupplierBid>
 {
-    public void Configure(EntityTypeBuilder<Bid> builder)
+    public void Configure(EntityTypeBuilder<SupplierBid> builder)
     {
         builder.HasKey(i => i.Id);
 

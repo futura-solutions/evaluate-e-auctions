@@ -3,11 +3,11 @@ using FS.EAuctions.Application.Bids.Get;
 
 namespace FS.EAuctions.Application.BuyerAuctions.Get;
 
-public record BuyerAuctionDto
+public record SupplierAuctionDto
 {
-    public BuyerAuctionDto() { } // Parameterless constructor required by AutoMapper
+    public SupplierAuctionDto() { } // Parameterless constructor required by AutoMapper
 
-    public BuyerAuctionDto(Guid id, string name, string description)
+    public SupplierAuctionDto(Guid id, string name, string description)
     {
         Id = id;
         Name = name;

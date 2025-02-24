@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FS.EAuctions.Data.Repository;
 
-public class BuyerAuctionRepository : IBuyerAuctionRepository
+public class BuyerAuctionRepository : IAuctionRepository<BuyerAuction, BuyerBid>
 {
     private readonly AuctionDbContext _buyerAuctionDbContext;
     
@@ -19,25 +19,25 @@ public class BuyerAuctionRepository : IBuyerAuctionRepository
         return await _buyerAuctionDbContext.BuyerAuctions.AnyAsync(r => r.Id == auctionId);
     }
     
-    public async Task<BuyerAuction> GetBuyerAuctionAsync(Guid buyerAuctionId, bool includeBids)
+    public async Task<BuyerAuction> GetAuctionAsync(Guid supplierAuctionId, bool includeBids)
     {
         if (includeBids)
         {
             return (await _buyerAuctionDbContext.BuyerAuctions
-                .Include(ba => ba.Bids)
-                .Where(ba => ba.Id == buyerAuctionId).FirstOrDefaultAsync())!;
+                .Include(ba => ba.BuyerBids)
+                .Where(ba => ba.Id == supplierAuctionId).FirstOrDefaultAsync())!;
         }
 
         return (await _buyerAuctionDbContext.BuyerAuctions
-            .Where(r => r.Id == buyerAuctionId).FirstOrDefaultAsync())!;
+            .Where(r => r.Id == supplierAuctionId).FirstOrDefaultAsync())!;
     }
 
-    public async Task AddBidToAuctionAsync(Guid buyerAuctionId, Bid bid)
+    public async Task AddBidToAuctionAsync(Guid buyerAuctionId, BuyerBid buyerBid)
     {
-        var buyerAuction = await GetBuyerAuctionAsync(buyerAuctionId, false);
+        var buyerAuction = await GetAuctionAsync(buyerAuctionId, false);
         if(buyerAuction != null)
         {
-            buyerAuction.Bids.Add(bid);
+            buyerAuction.BuyerBids.Add(buyerBid);
         }
     }
 
@@ -46,7 +46,7 @@ public class BuyerAuctionRepository : IBuyerAuctionRepository
         return (await _buyerAuctionDbContext.SaveChangesAsync() >= 0);
     }
 
-    public Task<Bid> GetBidForAuctionAsync(Guid requestBidId, Guid bidId)
+    public Task<SupplierBid> GetBidForAuctionAsync(Guid requestBidId, Guid bidId)
     {
         throw new NotImplementedException();
     }
@@ -56,8 +56,13 @@ public class BuyerAuctionRepository : IBuyerAuctionRepository
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Bid>> GetBidsForAuctionAsync(Guid auctionId)
+    public Task<IEnumerable<SupplierBid>> GetBidsForAuctionAsync(Guid auctionId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> AuctionExistsAsync(Guid buyerAuctionId)
+    {
+        return await _buyerAuctionDbContext.BuyerAuctions.AnyAsync(r => r.Id == buyerAuctionId);
     }
 }

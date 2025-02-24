@@ -3,6 +3,7 @@ using AutoMapper;
 using FS.EAuctions.Application.BuyerAuctions.Create;
 using FS.EAuctions.Application.BuyerAuctions.Get;
 using FS.EAuctions.Application.Exceptions;
+using FS.EAuctions.Application.SupplierAuctions.Create;
 using FS.EAuctions.Domain.Auctions;
 using FS.EAuctions.Domain.Bids;
 using Fs.EAuctions.Domain.Contracts;
@@ -10,20 +11,20 @@ using MediatR;
 
 namespace FS.EAuctions.API.Controllers;
 
-[Route("api/buyerauctions")]
+[Route("api/supplierauctions")]
 [ApiController]
-public class BuyerAuctionController : ControllerBase
+public class SupplierAuctionController : ControllerBase
 {
-    private readonly ILogger<BuyerAuctionController> _logger;
+    private readonly ILogger<SupplierAuctionController> _logger;
     private readonly IRepository<SupplierBid> _bidRepository;
-    private readonly IAuctionRepository<BuyerAuction, BuyerBid> _auctionRepository;
+    private readonly IAuctionRepository<SupplierAuction, SupplierBid> _auctionRepository;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public BuyerAuctionController(
-        ILogger<BuyerAuctionController> logger,
+    public SupplierAuctionController(
+        ILogger<SupplierAuctionController> logger,
         IRepository<SupplierBid> bidRepository,
-        IAuctionRepository<BuyerAuction, BuyerBid> auctionRepository,
+        IAuctionRepository<SupplierAuction, SupplierBid> auctionRepository,
         IMapper mapper,
         IMediator mediator)
     {
@@ -34,9 +35,9 @@ public class BuyerAuctionController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{buyerAuctionId}", Name = "GetBuyerAuction")]
+    [HttpGet("{buyerAuctionId}", Name = "GetSupplierAuction")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<BuyerAuctionDto>> GetBuyerAuction(Guid buyerAuctionId)
+    public async Task<ActionResult<BuyerAuctionDto>> GetSupplierAuction(Guid buyerAuctionId)
     {
         try
         {
@@ -58,13 +59,13 @@ public class BuyerAuctionController : ControllerBase
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<BuyerAuctionDto>> CreateAuction(BuyerAuctionForCreationDto buyerAuctionForCreationDto)
+    public async Task<ActionResult<SupplierAuctionDto>> CreateAuction(SupplierAuctionForCreationDto supplierAuctionForCreationDto)
     {
         try
         {
             var userGuid = Guid.NewGuid();
-            var createBuyerAuctionCommand = new CreateBuyerAuctionCommand(buyerAuctionForCreationDto, userGuid);
-            var buyerAuctionDto = await _mediator.Send(createBuyerAuctionCommand);
+            var createSupplierAuctionCommand = new CreateSupplierAuctionCommand(supplierAuctionForCreationDto, userGuid);
+            var buyerAuctionDto = await _mediator.Send(createSupplierAuctionCommand);
 
             return CreatedAtRoute("GetBuyerAuction",
                 new

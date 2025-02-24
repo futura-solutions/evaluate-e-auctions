@@ -10,6 +10,8 @@
   <ItemGroup>
     <Folder Include="BuyerAuctions\Delete\" />
     <Folder Include="BuyerAuctions\Update\" />
+    <Folder Include="SupplierAuctions\Delete\" />
+    <Folder Include="SupplierAuctions\Update\" />
   </ItemGroup>
 
   <ItemGroup>

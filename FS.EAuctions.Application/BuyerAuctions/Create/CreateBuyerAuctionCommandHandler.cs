@@ -33,8 +33,8 @@ public class CreateBuyerAuctionCommandHandler : IRequestHandler<CreateBuyerAucti
 
 		await _buyerAuctionRepository.AddAsync(newBuyerAuction);
 
-		var recipeDto = _mapper.Map<BuyerAuctionDto>(newBuyerAuction);
+		var buyerAuctionDto = _mapper.Map<BuyerAuctionDto>(newBuyerAuction);
 
-		return recipeDto;
+		return buyerAuctionDto;
 	}
 }

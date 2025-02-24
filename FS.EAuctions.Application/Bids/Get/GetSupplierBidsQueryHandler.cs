@@ -1,22 +1,23 @@
 ﻿using AutoMapper;
 using FS.EAuctions.Application.Exceptions;
 using FS.EAuctions.Domain.Auctions;
+using FS.EAuctions.Domain.Bids;
 using MediatR;
 
 namespace FS.EAuctions.Application.Bids.Get;
 
-public class GetBidsQueryHandler : IRequestHandler<GetBidsQuery, IEnumerable<BidDto>>
+public class GetSupplierBidsQueryHandler : IRequestHandler<GetSupplierBidsQuery, IEnumerable<SupplierBidDto>>
 {
-    IBuyerAuctionRepository _buyerAuctionRepository;
+    IAuctionRepository<BuyerAuction,BuyerBid> _buyerAuctionRepository;
     IMapper _mapper;
 
-    public GetBidsQueryHandler(IBuyerAuctionRepository buyerAuctionRepository, IMapper mapper)
+    public GetSupplierBidsQueryHandler(IAuctionRepository<BuyerAuction, BuyerBid> buyerAuctionRepository, IMapper mapper)
     {
         _buyerAuctionRepository = buyerAuctionRepository;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<BidDto>> Handle(GetBidsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SupplierBidDto>> Handle(GetSupplierBidsQuery request, CancellationToken cancellationToken)
     {
         if (!await _buyerAuctionRepository.BidExistsAsync(request.AuctionId))
         {
@@ -25,7 +26,7 @@ public class GetBidsQueryHandler : IRequestHandler<GetBidsQuery, IEnumerable<Bid
 
         var bids = await _buyerAuctionRepository.GetBidsForAuctionAsync(request.AuctionId);
 
-        var bidDtos = _mapper.Map<IEnumerable<BidDto>>(bids);
+        var bidDtos = _mapper.Map<IEnumerable<SupplierBidDto>>(bids);
         
         return bidDtos;
     }

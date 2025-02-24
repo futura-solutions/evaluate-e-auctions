@@ -5,7 +5,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace FS.EAuctions.Domain.Bids;
 
-public class Bid : BaseEntity
+public class SupplierBid : BaseEntity
 {
     public Guid Id { get; set; }
     
@@ -15,7 +15,7 @@ public class Bid : BaseEntity
 
     public string Unit { get; private set; }  = String.Empty;
     
-    public BuyerAuction Auction { get; set; }
+    public SupplierAuction Auction { get; set; }
 
     public Guid AuctionId { get; set; }
 

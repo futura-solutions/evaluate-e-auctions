@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
-using FS.EAuctions.Application.Bids.Create;
-using FS.EAuctions.Application.Bids.Get;
+using FS.EAuctions.Application.Bids.Update;
 
 namespace FS.EAuctions.Application.Profiles.Bid;
 
-public class BidForCreationDtoToBidProfile : Profile
+public class SupplierBidForUpdateDtoToSupplierBidProfile : Profile
 {
-    public BidForCreationDtoToBidProfile()
+    public SupplierBidForUpdateDtoToSupplierBidProfile()
     {
-        CreateMap<BidForCreationDto, Domain.Bids.Bid>()
+        CreateMap<SupplierBidForUpdateDto, Domain.Bids.SupplierBid>()
             .ForMember(dest => dest.Auction, opts => opts.Ignore())
             .ForMember(dest => dest.AuctionId, opts => opts.Ignore())
             .ForMember(dest => dest.Id, opts => opts.Ignore());
-
-        CreateMap<Domain.Bids.Bid, BidDto>();
     }
 }

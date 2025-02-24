@@ -2,7 +2,7 @@
 
 namespace FS.EAuctions.Application.BuyerAuctions.Create;
 
-public record BuyerAuctionForCreationDto(
+public record SupplierAuctionForCreationDto(
     string Name,
     DateTimeOffset StartAuctionDateTime,
     DateTimeOffset EndAuctionDateTime,

@@ -11,19 +11,18 @@ namespace FS.EAuctions.API.Controllers;
 /// <summary>
 /// Controller for managing bids.
 /// </summary>
-[Route("api/buyerauctions/{buyerAuctionId}/bids")]
+[Route("api/supplierauctions/{buyerAuctionId}/bids")]
 [ApiController]
-[ApiVersion(2)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class BidController : ControllerBase
+public class SupplierBidController : ControllerBase
 {
-	private readonly ILogger<BidController> _logger;
+	private readonly ILogger<SupplierBidController> _logger;
 	private readonly IMapper _mapper;
 	private readonly IMediator _mediator;
 
-	public BidController(
-		ILogger<BidController> logger,
+	public SupplierBidController(
+		ILogger<SupplierBidController> logger,
 		IMapper mapper,
 		IMediator mediator)
 	{
@@ -40,11 +39,11 @@ public class BidController : ControllerBase
 	/// <response code="200">Returns the list of bids.</response>
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<IEnumerable<BidDto>>> GetBids(Guid buyerAuctionId)
+	public async Task<ActionResult<IEnumerable<SupplierBidDto>>> GetBids(Guid buyerAuctionId)
 	{
 		try
 		{
-			var getBidsQuery = new GetBidsQuery(buyerAuctionId);
+			var getBidsQuery = new GetSupplierBidsQuery(buyerAuctionId);
 			var bidDtos = await _mediator.Send(getBidsQuery);
 
 			return Ok(bidDtos);
@@ -67,13 +66,13 @@ public class BidController : ControllerBase
 	/// <param name="bidId">The bid ID.</param>
 	/// <returns>The bid.</returns>
 	/// <response code="200">Returns the bid.</response>
-	[HttpGet("{bidId}", Name = "GetBid")]
+	[HttpGet("{bidId}", Name = "GetSupplierBid")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<BidDto>> GetBid(Guid buyerAuctionId, Guid bidId)
+	public async Task<ActionResult<SupplierBidDto>> GetBid(Guid buyerAuctionId, Guid bidId)
 	{
 		try
 		{
-			var getBidQuery = new GetBidQuery(buyerAuctionId, bidId);
+			var getBidQuery = new GetSupplierBidQuery(buyerAuctionId, bidId);
 			var bidDto = await _mediator.Send(getBidQuery);
 	
 			return Ok(bidDto);
@@ -97,27 +96,26 @@ public class BidController : ControllerBase
 	/// Creates a new bid for a buyer auction.
 	/// </summary>
 	/// <param name="buyerAuctionId">The recipe ID.</param>
-	/// <param name="bidForCreationDto">The bid for creation DTO.</param>
+	/// <param name="supplierBidForCreationDto">The bid for creation DTO.</param>
 	/// <returns>The created bid.</returns>
 	/// <response code="201">Returns the created bid.</response>
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status201Created)]
-	public async Task<ActionResult<BidDto>> CreateBid(Guid buyerAuctionId, BidForCreationDto bidForCreationDto)
+	public async Task<ActionResult<SupplierBidDto>> CreateBid(Guid buyerAuctionId, SupplierBidForCreationDto supplierBidForCreationDto)
 	{
 		try
 		{
 			var receivedAt = DateTime.UtcNow;
-			var createBidCommand = new CreateBidCommand(buyerAuctionId, bidForCreationDto, receivedAt);
-			var bidDto = await _mediator.Send(createBidCommand);
-			//var bidDto = new BidDto(Guid.NewGuid(), "Empty",3, "m");
+			var createSupplierBidCommand = new CreateSupplierBidCommand(buyerAuctionId, supplierBidForCreationDto, receivedAt);
+			var supplierBidDto = await _mediator.Send(createSupplierBidCommand);
 			
-			return CreatedAtRoute("GetBid",
+			return CreatedAtRoute("GetSupplierBid",
 				new
 				{
 					buyerAuctionId,
-					bidId = bidDto.Id
+					bidId = supplierBidDto.Id
 				},
-				bidDto);
+				supplierBidDto);
 		}
 		catch (BidNotFoundException ex)
 		{

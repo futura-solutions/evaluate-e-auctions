@@ -2,12 +2,12 @@
 
 namespace FS.EAuctions.Application.Bids.Get;
 
-public class GetBidQuery : IRequest<BidDto>
+public class GetSupplierBidQuery : IRequest<SupplierBidDto>
 {
 	public Guid BuyerAuctionId { get; set; }
 	public Guid BidId { get; set; }
 
-	public GetBidQuery(Guid buyerAuctionId, Guid bidId)
+	public GetSupplierBidQuery(Guid buyerAuctionId, Guid bidId)
 	{
 		BuyerAuctionId = buyerAuctionId;
 		BidId = bidId;
