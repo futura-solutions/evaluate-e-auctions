@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using FS.EAuctions.API.Hub;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FS.EAuctions.API.BackgroundServices;
 
 public class TimerBackgroundService : BackgroundService
 {
-    private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly IHubContext<AuctionHub> _hubContext;
 
-    public TimerBackgroundService(IHubContext<NotificationHub> hubContext)
+    public TimerBackgroundService(IHubContext<AuctionHub> hubContext)
     {
         _hubContext = hubContext;
     }

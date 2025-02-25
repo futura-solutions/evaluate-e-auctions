@@ -1,3 +1,8 @@
+using FS.EAuctions.API.BackgroundServices;
+using FS.EAuctions.API.Hub;
+using FS.EAuctions.API.Infrastructure;
+using FS.EAuctions.Application.Infrastructure;
+using FS.EAuctions.Application.SupplierAuctions.Consumer;
 using FS.EAuctions.Data.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using FS.EAuctions.Data.DBContexts.Application;
@@ -37,8 +42,26 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IAuctionRepository<BuyerAuction, BuyerBid>, BuyerAuctionRepository>();
 builder.Services.AddScoped<IAuctionRepository<SupplierAuction, SupplierBid>, SupplierAuctionRepository>();
 
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(policy =>
+	{
+		policy.AllowAnyHeader()
+			.AllowAnyMethod()
+			.AllowCredentials()
+			.SetIsOriginAllowed(origin => true); // Allow all origins for development
+	});
+});
+builder.Services.AddHostedService<TimerBackgroundService>();
+builder.Services.AddHostedService<SupplierMessageConsumer>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.Configure<RabbitMQConfiguration>(builder.Configuration.GetSection("RabbitMQConfiguration"));
+builder.Services.AddSingleton<IMessagePublisher, MessagePublisher>(); 
+	
 var app = builder.Build();
 
 if(!app.Environment.IsDevelopment())
@@ -56,7 +79,10 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors();
 
 app.MapControllers();
+
+app.MapHub<AuctionHub>("/auctionHub");
 
 app.Run();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FS.EAuctions.Application.BuyerAuctions.Get;
+using FS.EAuctions.Application.Infrastructure;
 using FS.EAuctions.Domain.Auctions;
 using Fs.EAuctions.Domain.Contracts;
 using MediatR;
@@ -12,12 +13,16 @@ public class CreateBuyerAuctionCommandHandler : IRequestHandler<CreateBuyerAucti
 	private readonly IRepository<BuyerAuction> _buyerAuctionRepository;
 	private readonly IMapper _mapper;
 	private readonly IValidator<CreateBuyerAuctionCommand> _validator;
-
-	public CreateBuyerAuctionCommandHandler(IRepository<BuyerAuction> buyerAuctionRepository, IMapper mapper, IValidator<CreateBuyerAuctionCommand> validator)
+	private readonly IMessagePublisher _messagePublisher;
+	public CreateBuyerAuctionCommandHandler(IRepository<BuyerAuction> buyerAuctionRepository, 
+		IMapper mapper, 
+		IValidator<CreateBuyerAuctionCommand> validator,
+		IMessagePublisher messagePublisher)
 	{
 		_buyerAuctionRepository = buyerAuctionRepository;
 		_mapper = mapper;
 		_validator = validator;
+		_messagePublisher = messagePublisher;
 	}
 
 	public async Task<BuyerAuctionDto> Handle(CreateBuyerAuctionCommand request, CancellationToken cancellationToken)
@@ -29,6 +34,9 @@ public class CreateBuyerAuctionCommandHandler : IRequestHandler<CreateBuyerAucti
 			throw new ValidationException(validationResult.Errors);
 		}
 
+		// publish message to broker
+		await _messagePublisher.PublishMessageAsync("A new Auction was created.");
+		
 		var newBuyerAuction = _mapper.Map<BuyerAuction>(request.BuyerAuctionForCreationDto);
 
 		await _buyerAuctionRepository.AddAsync(newBuyerAuction);
