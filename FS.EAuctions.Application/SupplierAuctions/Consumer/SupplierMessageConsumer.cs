@@ -45,8 +45,8 @@ public class SupplierMessageConsumer : BackgroundService
 
             var supplierAuctionForCreationDto = new SupplierAuctionForCreationDto(
                 Name: "TestAuction",
-                StartAuctionDateTime: DateTime.Now,
-                EndAuctionDateTime: DateTime.Now,
+                StartAuctionDateTime: DateTimeOffset.Now.ToUniversalTime(),
+                EndAuctionDateTime: DateTimeOffset.Now.ToUniversalTime(),
                 Description: message,
                 CreatedBy: Guid.NewGuid()
                 );

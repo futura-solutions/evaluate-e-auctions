@@ -1,6 +1,4 @@
-﻿using FS.EAuctions.Application.Bids.Create;
-
-namespace FS.EAuctions.Application.BuyerAuctions.Create;
+﻿namespace FS.EAuctions.Application.SupplierAuctions.Create;
 
 public record SupplierAuctionForCreationDto(
     string Name,

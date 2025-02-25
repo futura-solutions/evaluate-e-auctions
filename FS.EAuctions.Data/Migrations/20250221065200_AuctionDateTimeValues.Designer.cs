@@ -3,6 +3,7 @@ using System;
 using FS.EAuctions.Data.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FS.EAuctions.Data.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    partial class AuctionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250221065200_AuctionDateTimeValues")]
+    partial class AuctionDateTimeValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +37,6 @@ namespace FS.EAuctions.Data.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset>("EndAuctionDateTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -57,78 +56,10 @@ namespace FS.EAuctions.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BuyerAuctions", (string)null);
+                    b.ToTable("BuyerAuctions");
                 });
 
-            modelBuilder.Entity("FS.EAuctions.Domain.Auctions.SupplierAuction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("EndAuctionDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("character varying(80)");
-
-                    b.Property<DateTimeOffset>("StartAuctionDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SupplierAuctions", (string)null);
-                });
-
-            modelBuilder.Entity("FS.EAuctions.Domain.Bids.BuyerBid", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AuctionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("ReceivedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuctionId");
-
-                    b.ToTable("BuyerBids", (string)null);
-                });
-
-            modelBuilder.Entity("FS.EAuctions.Domain.Bids.SupplierBid", b =>
+            modelBuilder.Entity("FS.EAuctions.Domain.Bids.Bid", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,24 +99,13 @@ namespace FS.EAuctions.Data.Migrations
 
                     b.HasIndex("AuctionId");
 
-                    b.ToTable("SupplierBids", (string)null);
+                    b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("FS.EAuctions.Domain.Bids.BuyerBid", b =>
+            modelBuilder.Entity("FS.EAuctions.Domain.Bids.Bid", b =>
                 {
                     b.HasOne("FS.EAuctions.Domain.Auctions.BuyerAuction", "Auction")
-                        .WithMany("BuyerBids")
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Auction");
-                });
-
-            modelBuilder.Entity("FS.EAuctions.Domain.Bids.SupplierBid", b =>
-                {
-                    b.HasOne("FS.EAuctions.Domain.Auctions.SupplierAuction", "Auction")
-                        .WithMany("SupplierBids")
+                        .WithMany("Bids")
                         .HasForeignKey("AuctionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -195,12 +115,7 @@ namespace FS.EAuctions.Data.Migrations
 
             modelBuilder.Entity("FS.EAuctions.Domain.Auctions.BuyerAuction", b =>
                 {
-                    b.Navigation("BuyerBids");
-                });
-
-            modelBuilder.Entity("FS.EAuctions.Domain.Auctions.SupplierAuction", b =>
-                {
-                    b.Navigation("SupplierBids");
+                    b.Navigation("Bids");
                 });
 #pragma warning restore 612, 618
         }

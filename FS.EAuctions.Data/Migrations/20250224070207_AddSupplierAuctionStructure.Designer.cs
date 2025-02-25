@@ -3,6 +3,7 @@ using System;
 using FS.EAuctions.Data.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FS.EAuctions.Data.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    partial class AuctionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250224070207_AddSupplierAuctionStructure")]
+    partial class AddSupplierAuctionStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace FS.EAuctions.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BuyerAuctions", (string)null);
+                    b.ToTable("BuyerAuctions");
                 });
 
             modelBuilder.Entity("FS.EAuctions.Domain.Auctions.SupplierAuction", b =>
@@ -83,7 +86,7 @@ namespace FS.EAuctions.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SupplierAuctions", (string)null);
+                    b.ToTable("SupplierAuctions");
                 });
 
             modelBuilder.Entity("FS.EAuctions.Domain.Bids.BuyerBid", b =>
@@ -125,7 +128,7 @@ namespace FS.EAuctions.Data.Migrations
 
                     b.HasIndex("AuctionId");
 
-                    b.ToTable("BuyerBids", (string)null);
+                    b.ToTable("BuyerBids");
                 });
 
             modelBuilder.Entity("FS.EAuctions.Domain.Bids.SupplierBid", b =>
@@ -168,7 +171,7 @@ namespace FS.EAuctions.Data.Migrations
 
                     b.HasIndex("AuctionId");
 
-                    b.ToTable("SupplierBids", (string)null);
+                    b.ToTable("SupplierBids");
                 });
 
             modelBuilder.Entity("FS.EAuctions.Domain.Bids.BuyerBid", b =>
