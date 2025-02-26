@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using AutoMapper;
 using FS.EAuctions.Application.BuyerAuctions.Create;
 using FS.EAuctions.Application.SupplierAuctions.Create;
 using MediatR;
@@ -19,14 +20,18 @@ public class CreateSupplierAuctionMessageConsumer : BackgroundService
     private readonly ILogger<CreateSupplierAuctionMessageConsumer> _logger;
     private IConnection? _connection;
     private IChannel? _channel;
+    private readonly IMapper _mapper;
     
-    public CreateSupplierAuctionMessageConsumer(IServiceProvider serviceProvider, 
+    public CreateSupplierAuctionMessageConsumer(
+        IServiceProvider serviceProvider, 
         IConfiguration config,
-        ILogger<CreateSupplierAuctionMessageConsumer> logger)
+        ILogger<CreateSupplierAuctionMessageConsumer> logger,
+        IMapper mapper)
     {
         _serviceProvider = serviceProvider;
         _config = config;
         _logger = logger;
+        _mapper = mapper;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -77,16 +82,8 @@ public class CreateSupplierAuctionMessageConsumer : BackgroundService
             using var scope = _serviceProvider.CreateScope();
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-            var command = new CreateSupplierAuctionCommand(
-                new SupplierAuctionForCreationDto(
-                    Name: "TestAuction",
-                    StartAuctionDateTime: DateTimeOffset.UtcNow,
-                    EndAuctionDateTime: DateTimeOffset.UtcNow.AddMinutes(10),
-                    Description: buyerAuctionForCreationDto.Description,
-                    CreatedBy: Guid.NewGuid()
-                ),
-                Guid.NewGuid()
-            );
+            var supplierAuctionForCreationDto = _mapper.Map<SupplierAuctionForCreationDto>(buyerAuctionForCreationDto);
+            var command = new CreateSupplierAuctionCommand(supplierAuctionForCreationDto, Guid.NewGuid());
 
             await mediator.Send(command);
 

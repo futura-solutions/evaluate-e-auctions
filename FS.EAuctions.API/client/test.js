@@ -3,8 +3,8 @@ import { sleep } from 'k6';
 
 export let options = {
     vus: 100, // Virtual users
-    iterations: 100,
-    //duration: '1s', // Run for 1 second
+    //iterations: 100,
+    duration: '1s', // Run for 1 second
 };
 
 const counter = 1;
@@ -22,12 +22,14 @@ export default function () {
     const bidName = `Test Bid VU${__VU}-Iter${__ITER}`; // Unique for each VU and iteration
     const randomQuantity = Math.floor(Math.random() * 100) + 1;
     
-    http.post('http://localhost:5109/api/buyerauctions/019527cc-26ca-7c73-9e08-bd51123a9dde/bids', JSON.stringify(
+    http.post('http://localhost:5109/api/buyerauctions', JSON.stringify(
 	{
-      "name": bidName,
-      "quantity": randomQuantity,
-      "unit": "m"
-}), 
+        "name": "DemoAuction",
+        "startAuctionDateTime": "2025-02-21T08:00:55.594Z",
+        "endAuctionDateTime": "2025-02-21T10:00:59.594Z",
+        "description": "Demo Auction",
+        "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }), 
 {
     headers: { 'Content-Type': 'application/json' },
     });

@@ -1,8 +1,9 @@
+using FS.EAuctions.Domain.Base;
 using FS.EAuctions.Domain.Bids;
 
 namespace FS.EAuctions.Domain.Auctions;
 
-public class SupplierAuction
+public class SupplierAuction : BaseEntity
 {
     public Guid Id { get; set; }
     
