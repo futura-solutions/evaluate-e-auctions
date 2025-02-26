@@ -17,7 +17,6 @@ public class TimerBackgroundService : BackgroundService
         while (!stoppingToken.IsCancellationRequested)
         {
             string currentTime = DateTime.UtcNow.ToString("HH:mm:ss");
-
             try
             {
                 await _hubContext.Clients.All.SendAsync("ReceiveTime", currentTime, stoppingToken);

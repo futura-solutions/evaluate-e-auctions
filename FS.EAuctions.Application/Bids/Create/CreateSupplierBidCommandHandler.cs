@@ -4,6 +4,8 @@ using FS.EAuctions.Application.Bids.Get;
 using FS.EAuctions.Domain.Auctions;
 using FS.EAuctions.Domain.Bids;
 using MediatR;
+using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 
 namespace FS.EAuctions.Application.Bids.Create;
 
@@ -12,12 +14,23 @@ public class CreateSupplierBidCommandHandler : IRequestHandler<CreateSupplierBid
     IAuctionRepository<SupplierAuction, SupplierBid> _auctionRepository;
     IMapper _mapper;
     IValidator<CreateSupplierBidCommand> _validator;
+    
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IConfiguration _config;
+    private IConnection? _connection;
+    private IChannel? _channel;
 
-    public CreateSupplierBidCommandHandler(IAuctionRepository<SupplierAuction, SupplierBid> auctionRepository, IMapper mapper, IValidator<CreateSupplierBidCommand> validator)
+    public CreateSupplierBidCommandHandler(IAuctionRepository<SupplierAuction, 
+        SupplierBid> auctionRepository, 
+        IMapper mapper, 
+        IValidator<CreateSupplierBidCommand> validator,
+        IServiceProvider serviceProvider, IConfiguration config)
     {
         _auctionRepository = auctionRepository;
         _mapper = mapper;
         _validator = validator;
+        _serviceProvider = serviceProvider;
+        _config = config;
     }
 
     public async Task<SupplierBidDto> Handle(CreateSupplierBidCommand request, CancellationToken cancellationToken)
@@ -29,16 +42,17 @@ public class CreateSupplierBidCommandHandler : IRequestHandler<CreateSupplierBid
         {
             throw new ValidationException(validationResult.Errors);
         }
-
-        // if (!await _auctionRepository.BidExistsAsync(request.RecipeId))
-        // {
-        //     throw new RecipeNotFoundException(request.RecipeId);
-        // }
+        
+        var factory = new ConnectionFactory() { HostName = _config["RabbitMQConfiguration:HostName"] };
+        _connection = await factory.CreateConnectionAsync();
+        _channel = await _connection.CreateChannelAsync();
 
         var newBid = _mapper.Map<Domain.Bids.SupplierBid>(request.SupplierBidForCreationDto);
         newBid.ReceivedAt = request.ReceivedAt;
 
-        await _auctionRepository.AddBidToAuctionAsync(request.BuyerAuctionId, newBid);
+        // do not save directly but push the message to the queue
+        
+        //await _auctionRepository.AddBidToAuctionAsync(request.BuyerAuctionId, newBid);
 
         await _auctionRepository.SaveChangesAsync();
 

@@ -17,5 +17,8 @@ public record SupplierAuctionDto
     public Guid Id { get; init; }
     public string Name { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
+    
+    public DateTimeOffset StartAuctionDateTime { get; set; }
+    public DateTimeOffset EndAuctionDateTime { get; set; }
 }
 

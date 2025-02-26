@@ -1,42 +1,62 @@
 using System.Text;
+using System.Text.Json;
 using FS.EAuctions.API.Infrastructure;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
 namespace FS.EAuctions.Application.Infrastructure;
 
-public class MessagePublisher : IMessagePublisher
+public class MessagePublisher : IMessagePublisher, IAsyncDisposable
 {
     private readonly RabbitMQConfiguration _config;
+    private IChannel? _channel;
+    private IConnection _connection;
 
     public MessagePublisher(IOptions<RabbitMQConfiguration> config)
     {
         _config = config.Value;
     }
 
-    public async Task PublishMessageAsync(string message)
+    public async Task InitializeAsync()
     {
         var factory = new ConnectionFactory() { HostName = _config.HostName };
+        _connection = await factory.CreateConnectionAsync(); 
+        _channel = await _connection.CreateChannelAsync(); 
 
-        await using var connection = await factory.CreateConnectionAsync(); // ✅ Use CreateConnectionAsync() in v7.1.0
-        await using var channel = await connection.CreateChannelAsync(); // ✅ Use CreateChannelAsync() instead of CreateModel()
-
-        await channel.QueueDeclareAsync(queue: _config.QueueName,
+        await _channel.QueueDeclareAsync(queue: _config.QueueName,
             durable: false,
             exclusive: false,
             autoDelete: false,
             arguments: null);
-
-        var body = Encoding.UTF8.GetBytes(message);
+    }
+    
+    public async Task PublishMessageAsync<T>(T messageObject)
+    {
+        if (_channel is null)
+        {
+            await InitializeAsync(); // Initialize only if not already initialized
+        }
         
-        var props = new BasicProperties();
-        props.ContentType = "text/plain";
-        props.DeliveryMode = DeliveryModes.Persistent;
+        var messageJson = JsonSerializer.Serialize(messageObject); // Serialize object to JSON
+        var body = Encoding.UTF8.GetBytes(messageJson);
+        
+        var props = new BasicProperties
+        {
+            ContentType = "text/plain",
+            DeliveryMode = DeliveryModes.Persistent
+        };
 
-        await channel.BasicPublishAsync(exchange: "",
-            routingKey: _config.QueueName,
-            mandatory: true,
-            basicProperties: props,
-            body: body);
+        if (_channel != null)
+            await _channel.BasicPublishAsync(exchange: "",
+                routingKey: _config.QueueName,
+                mandatory: true,
+                basicProperties: props,
+                body: body);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_channel != null) await _channel.DisposeAsync();
+        await _connection.DisposeAsync();
     }
 }

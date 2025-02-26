@@ -25,9 +25,9 @@ public class GetSupplierAuctionByIdQueryHandler : IRequestHandler<GetSupplierAuc
 			throw new BuyerAuctionNotFoundException(request.SupplierAuctionId);
 		}
 
-		var buyerAuctionEntity = await _auctionRepository.GetAuctionAsync(request.SupplierAuctionId, true);
+		var supplierAuctionEntity = await _auctionRepository.GetAuctionAsync(request.SupplierAuctionId, true);
 
-		var supplierAuctionDto = _mapper.Map<SupplierAuctionDto>(buyerAuctionEntity);
+		var supplierAuctionDto = _mapper.Map<SupplierAuctionDto>(supplierAuctionEntity);
 
 		return supplierAuctionDto;
 	}

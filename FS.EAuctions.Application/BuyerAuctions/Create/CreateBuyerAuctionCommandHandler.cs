@@ -34,8 +34,7 @@ public class CreateBuyerAuctionCommandHandler : IRequestHandler<CreateBuyerAucti
 			throw new ValidationException(validationResult.Errors);
 		}
 
-		// publish message to broker
-		await _messagePublisher.PublishMessageAsync("A new Auction was created.");
+		await _messagePublisher.PublishMessageAsync(request.BuyerAuctionForCreationDto);
 		
 		var newBuyerAuction = _mapper.Map<BuyerAuction>(request.BuyerAuctionForCreationDto);
 

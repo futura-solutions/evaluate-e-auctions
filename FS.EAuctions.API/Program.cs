@@ -55,7 +55,7 @@ builder.Services.AddCors(options =>
 	});
 });
 builder.Services.AddHostedService<TimerBackgroundService>();
-builder.Services.AddHostedService<SupplierMessageConsumer>();
+builder.Services.AddHostedService<CreateSupplierAuctionMessageConsumer>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

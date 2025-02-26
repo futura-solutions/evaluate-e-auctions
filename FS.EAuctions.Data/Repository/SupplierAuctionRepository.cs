@@ -63,8 +63,8 @@ public class SupplierAuctionRepository : IAuctionRepository<SupplierAuction, Sup
         throw new NotImplementedException();
     }
 
-    public async Task<bool> AuctionExistsAsync(Guid buyerAuctionId)
+    public async Task<bool> AuctionExistsAsync(Guid auctionId)
     {
-        return await _supplierAuctionDbContext.BuyerAuctions.AnyAsync(r => r.Id == buyerAuctionId);
+        return await _supplierAuctionDbContext.SupplierAuctions.AnyAsync(r => r.Id == auctionId);
     }
 }

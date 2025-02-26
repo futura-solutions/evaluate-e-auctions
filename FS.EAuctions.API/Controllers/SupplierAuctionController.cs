@@ -4,6 +4,7 @@ using FS.EAuctions.Application.BuyerAuctions.Create;
 using FS.EAuctions.Application.BuyerAuctions.Get;
 using FS.EAuctions.Application.Exceptions;
 using FS.EAuctions.Application.SupplierAuctions.Create;
+using FS.EAuctions.Application.SupplierAuctions.Get;
 using FS.EAuctions.Domain.Auctions;
 using FS.EAuctions.Domain.Bids;
 using Fs.EAuctions.Domain.Contracts;
@@ -35,24 +36,24 @@ public class SupplierAuctionController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{buyerAuctionId}", Name = "GetSupplierAuction")]
+    [HttpGet("{supplierAuctionId}", Name = "GetSupplierAuction")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<BuyerAuctionDto>> GetSupplierAuction(Guid buyerAuctionId)
+    public async Task<ActionResult<BuyerAuctionDto>> GetSupplierAuction(Guid supplierAuctionId)
     {
         try
         {
-            var getBuyerAuctionQuery = new GetBuyerAuctionByIdQuery(buyerAuctionId);
-            var buyerAuctionDto = await _mediator.Send(getBuyerAuctionQuery);
+            var getSupplierAuctionQuery = new GetSupplierAuctionByIdQuery(supplierAuctionId);
+            var supplierAuctionDto = await _mediator.Send(getSupplierAuctionQuery);
 
-            return Ok(buyerAuctionDto);
+            return Ok(supplierAuctionDto);
         }
-        catch (BuyerAuctionNotFoundException ex)
+        catch (SupplierAuctionNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogCritical($"Exception while getting recipe with id {buyerAuctionId}", ex);
+            _logger.LogCritical($"Exception while getting recipe with id {supplierAuctionId}", ex);
             return StatusCode(500, "A problem happened while handling your request.");
         }
     }
